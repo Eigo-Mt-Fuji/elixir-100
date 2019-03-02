@@ -1,4 +1,4 @@
-defmodule P22SectionStructure do
+defmodule P23SectionStructure do
   @moduledoc false
 
   def solve() do
