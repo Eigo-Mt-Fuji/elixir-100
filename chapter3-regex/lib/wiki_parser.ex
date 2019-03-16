@@ -18,4 +18,8 @@ defmodule WikiParser do
   def fetch_text(wikis, index = 0) do
     wikis |> Enum.map( &( &1 |> Map.fetch!("text") ) ) |> Enum.at(index)
   end
+
+  def cleanser(_, key, ope, val) do
+    key <> ope <> val |> String.replace("\n", " ")
+  end
 end

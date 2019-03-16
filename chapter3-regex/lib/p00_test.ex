@@ -1,7 +1,19 @@
 defmodule P00Test do
   @moduledoc false
 
+  def remove_highlight(message, lvl) do
+    Regex.replace(
+      ~r/([\']{#{lvl}})(?<=[\']{#{lvl}})(.+)(?=[\']{#{lvl}})([\']{#{lvl}})/s,
+      message,
+      fn (_, _, item, _) -> item end
+    )
+  end
   def solve() do
+
+    "5 '''現在の国号'''「'''''グレートブリテン及び北アイルランド連合王国'''''」に''変''更"
+    |> remove_highlight(5)
+    |> remove_highlight(3)
+    |> remove_highlight(2) |> IO.puts
 
     cleanser = fn (_, key, ope, val) -> key <> ope <> val |> String.replace("\n", " ") end
 
