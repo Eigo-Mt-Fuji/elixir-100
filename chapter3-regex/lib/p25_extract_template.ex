@@ -5,23 +5,27 @@ defmodule P25ExtractTemplate do
     key <> ope <> val |> String.replace("\n", " ")
   end
 
-# key = value<ref>xxx</ref>
   def solve() do
 
     wiki_text = WikiParser.search_by_country("jawiki-country.json", "イギリス") |> WikiParser.fetch_text(0)
+    
+    # 基礎情報の抽出
+    [ _original, _country, templates ]
+      = Regex.run(~r/\{\{基礎情報\s([^\s]+)\n\|(.+)(?=\n\}\}\n)/s, wiki_text)
 
-    [ _original | matches ] = Regex.run(~r/\{\{基礎情報\s([^\s]+)\n(.+)(?=\n\}\}\n)/s, wiki_text)
-    [ _country, templates ] = matches
-
+    # 肯定先読み /
     templates
-    |> String.trim_leading("|")
-    |> String.trim_trailing("\n")
     |> String.split("\n|")
-    |> Enum.map( fn (item) -> "|"<>item end )
-    |> Enum.map(fn (item) -> Regex.replace(~r/^(\|.+)(?=\s\=\s)(\s=\s)(.+)$/s, item, &( _cleanser(&1, &2, &3, &4) )) end)
-    |> Enum.map( &( Regex.run(~r/^\|(.+)(?=\s\=\s)\s=\s(.+)$/s, &1) ) )
+    # クレンジング（値に含まれる改行コードの置換）
+    |> Enum.map( fn (item) -> Regex.replace(~r/^(.+)(?=\s\=\s)(\s=\s)(.+)$/s, item, &_cleanser/4) end )
+    # 正規表現　フィルタ
+    |> Enum.filter( &( Regex.match?(~r/^(.+)(?=\s\=\s)\s=\s(.+)$/s, &1) ) )
+    # 正規表現　抽出
+    |> Enum.map( &( Regex.run(~r/^(.+)(?=\s\=\s)\s=\s(.+)$/s, &1) ) )
+    # List -> Map
     |> Enum.map( &( %{&1 |> Enum.at(1) => &1 |> Enum.at(2) }) )
+    # 関数の表記 the format of &Mod.fun/arity
     |> Enum.reduce( &Enum.into/2 )
-    |> IO.inspect
+    |> Enum.each( & ( elem(&1, 0) |> IO.inspect ))
   end
 end
