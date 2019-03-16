@@ -45,6 +45,9 @@ defmodule WikiParser do
     #
     Regex.replace(~r/\[(http(?s)\:\/\/[a-zA-Z0-9\.\/\-\_\&\?\%\@=]+)\s([^\|\]]+)(?=\])\]/s, text, fn (_, b, article) -> article end)
   end
+  def fetch_country_flag(text) do
+    Regex.replace(~r/(Flag\sof\sthe\sUnited\sKingdom\.svg)/s, text, fn (_, flag) -> "https://upload.wikimedia.org/wikipedia/commons/a/ae/"<>flag end)
+  end
   def remove_file_link(text) do
     # [[ファイル:Wikipedia-logo-v2-ja.png|thumb|説明文]]
     Regex.replace(~r/\[\[ファイル:([^\|\[\]]+)\|([^\|\[\]]+)\|([^\|\[\]]+)(?=\]\])\]\]/s, text, fn (_, _, _, display_text) -> display_text end)
