@@ -30,5 +30,24 @@ defmodule WikiParser do
       fn (_, _, item, _) -> item end
     )
   end
+  def remove_link(text) do
+    Regex.replace(~r/\[\[(?<=\[\[)([^\|\[\]]+)(?=\]\])\]\]/s, text, fn (_, article) -> article end)
+  end
+  def remove_link_display_text(text) do
+    Regex.replace(~r/\[\[(?<=\[\[)([^\|\[\]]+)(?=\|)\|([^\|\[\]]+)(?=\]\])\]\]/s, text, fn (_, _, display_text) -> display_text end)
+  end
+  def remove_redirect_markup(text) do
+    Regex.replace(~r/\#REDIRECT\s\[\[(?<=\[\[)([^\|\[\]]+)(?=\]\])\]\]/s, text, fn (_, article) -> article end)
+  end
+  def remove_external_link(text) do
+
+  # [http://esa.un.org/unpd/wpp/Excel-Data/population.htm United Nations Department of Economic and Social Affairs>Population Division>Data>Population>Total Population]
+    #
+    Regex.replace(~r/\[(http(?s)\:\/\/[a-zA-Z0-9\.\/\-\_\&\?\%\@=]+)\s([^\|\]]+)(?=\])\]/s, text, fn (_, b, article) -> article end)
+  end
+  def remove_file_link(text) do
+    # [[ファイル:Wikipedia-logo-v2-ja.png|thumb|説明文]]
+    Regex.replace(~r/\[\[ファイル:([^\|\[\]]+)\|([^\|\[\]]+)\|([^\|\[\]]+)(?=\]\])\]\]/s, text, fn (_, _, _, display_text) -> display_text end)
+  end
 
 end

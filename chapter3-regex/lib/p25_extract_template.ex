@@ -8,7 +8,6 @@ defmodule P25ExtractTemplate do
     # 基礎情報の抽出
     [ _original, _country, templates ]
       = Regex.run(~r/\{\{基礎情報\s([^\s]+)\n\|(.+)(?=\n\}\}\n)/s, wiki_text)
-
     # 肯定先読み /
     templates
     |> String.split("\n|")
