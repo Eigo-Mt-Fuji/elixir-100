@@ -13,7 +13,9 @@ defmodule Chapter4 do
 
   """
   def solve do
-    P30Read.solve
-    |> IO.inspect
+    stream = P30Read.solve
+    stream |> P31FetchVerb.solve |> Enum.to_list |> IO.inspect
+    stream |> P32FetchVerbBase.solve |> Enum.to_list |> IO.inspect
+    stream |> P33FetchNounSahen.solve |> Enum.to_list |> IO.inspect
   end
 end
