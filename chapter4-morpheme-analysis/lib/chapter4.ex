@@ -1,18 +1,19 @@
 defmodule Chapter4 do
   @moduledoc """
-  Documentation for Chapter4.
+  NLP Chapter4 in Elixir.
   """
 
   @doc """
-  Hello world.
+  Run
 
   ## Examples
 
-      iex> Chapter4.hello()
+      iex> Chapter4.solve()
       :world
 
   """
-  def hello do
-    :world
+  def solve do
+    P30Read.solve
+    |> IO.inspect
   end
 end
