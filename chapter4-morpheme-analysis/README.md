@@ -98,3 +98,8 @@ EOS
 。      記号,句点,*,*,*,*,。,。,。
 EOS
 ```
+
+## Note: Elixir Plot Library
+
+* expyplot - cover all functions matplotlib.pyplot
+https://hex.pm/packages/expyplot
